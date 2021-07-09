@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./ContactList.module.css";
-import PropTypes from "prop-types";
 
 import { useDispatch, useSelector } from "react-redux";
 import { deleteContactOperation } from "../../redux/contactForm/contactFormOperetion";
