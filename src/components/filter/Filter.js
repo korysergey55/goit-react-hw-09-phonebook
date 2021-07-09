@@ -2,14 +2,17 @@ import React from "react";
 import styles from "./Filter.module.css";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { filterContacts } from "../../redux/contactForm/contactFormActions";
 import { filterSelector } from "../../redux/contactForm/contactFormSelectors";
 
-const Filter = ({ filter, filterContacts }) => {
+const Filter = () => {
+
+ const dispatch = useDispatch();
+ const filter = useSelector(filterSelector);
 
  const onHandleChange = (event) => {
-  filterContacts(event.target.value);
+  dispatch(filterContacts(event.target.value));
  };
 
  return (
@@ -31,17 +34,5 @@ const Filter = ({ filter, filterContacts }) => {
  );
 };
 
-Filter.propTypes = {
- filter: PropTypes.string,
- filterContacts: PropTypes.func,
-};
 
-const mapStateToProps = (state, ownProps) => ({
- filter: filterSelector(state),
-});
-
-const mapDispatchToProps = {
- filterContacts,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default Filter;
