@@ -1,82 +1,84 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import styles from "./AuthForm.module.css";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+
 import { registrationApi } from "../../servises/authApi";
 import {
  registrationOperation,
  loginOperation,
 } from "../../redux/auth/authOperations";
 
-class AuthForm extends Component {
- state = { email: "", password: "" };
+const initialState = {
+ email: "",
+ password: "",
+};
 
- onHandleChange = (event) => {
+const AuthForm = () => {
+  
+ const [state, setState] = useState(initialState);
+ const location = useLocation();
+ const dispatch = useDispatch();
+
+ const onHandleChange = (event) => {
   const { name, value } = event.target;
-  this.setState({ [name]: value });
+  setState((prev) => ({ ...prev, [name]: value }));
  };
- onHandleSubmit = (event) => {
+ const onHandleSubmit = (event) => {
   event.preventDefault();
-  registrationApi(this.state);
+  registrationApi(state);
 
-  this.props.location.pathname === "/registration"
-   ? this.props.registrationOperation(this.state)
-   : this.props.loginOperation({
-      email: this.state.email,
-      password: this.state.password,
-     });
+  location.pathname === "/registration"
+   ? dispatch(registrationOperation(state))
+   : dispatch(
+      loginOperation({
+       email: state.email,
+       password: state.password,
+      })
+     );
  };
- render() {
-  return (
-   <form onSubmit={this.onHandleSubmit} className={styles.formAuth}>
-    <div className={styles.inputContainer}>
-     {this.props.location.pathname === "/registration" && (
-      <label className={styles.labelName}>
-       Name
-       <input
-        className={styles.inputName}
-        type="text"
-        name="name"
-        value={this.state.name}
-        onChange={this.onHandleChange}
-       />
-      </label>
-     )}
-
+ return (
+  <form onSubmit={onHandleSubmit} className={styles.formAuth}>
+   <div className={styles.inputContainer}>
+    {location.pathname === "/registration" && (
      <label className={styles.labelName}>
-      Email
+      Name
       <input
        className={styles.inputName}
        type="text"
-       name="email"
-       value={this.state.email}
-       onChange={this.onHandleChange}
+       name="name"
+       value={state.name}
+       onChange={onHandleChange}
       />
      </label>
-     <label className={styles.labelName}>
-      Password
-      <input
-       className={styles.inputName}
-       type="text"
-       name="password"
-       value={this.state.password}
-       onChange={this.onHandleChange}
-      />
-     </label>
-    </div>
-    <button type="submit" className={styles.buttonGo}>
-     {this.props.location.pathname === "/registration"
-      ? "Registration"
-      : "Login"}
-    </button>
-   </form>
-  );
- }
-}
-const mapStateToProps = (state, ownProps) => ({});
-const mapDispatchToProps = { registrationOperation, loginOperation };
+    )}
 
-export default connect(
- mapStateToProps,
- mapDispatchToProps
-)(withRouter(AuthForm));
+    <label className={styles.labelName}>
+     Email
+     <input
+      className={styles.inputName}
+      type="text"
+      name="email"
+      value={state.email}
+      onChange={onHandleChange}
+     />
+    </label>
+    <label className={styles.labelName}>
+     Password
+     <input
+      className={styles.inputName}
+      type="text"
+      name="password"
+      value={state.password}
+      onChange={onHandleChange}
+     />
+    </label>
+   </div>
+   <button type="submit" className={styles.buttonGo}>
+    {location.pathname === "/registration" ? "Registration" : "Login"}
+   </button>
+  </form>
+ );
+};
+
+export default AuthForm;
