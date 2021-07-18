@@ -5,10 +5,11 @@ import { Switch } from "react-router";
 import { mainRoutes } from "../routes/mainRouters";
 import PrivateRoutes from "../routes/PrivateRoutes";
 import PublicRoutes from "../routes/PublicRoutes";
-import { connect } from "react-redux";
+import {  useSelector } from "react-redux";
 import { isAuthSelector } from "../redux/auth/authSelectors";
 
-const App = ({isAuth}) => {
+const App = () => {
+ const isAuth = useSelector(isAuthSelector);
  return (
   <>
    <Header />
@@ -39,14 +40,4 @@ const App = ({isAuth}) => {
  );
 };
 
-const mapStateToProps = (state, ownProps) => ({
- isAuth: isAuthSelector(state),
-});
-
-const mapDispatchToProps = {
-
-};
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

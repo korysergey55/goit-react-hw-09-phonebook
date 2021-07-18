@@ -10,6 +10,7 @@ export const HeaderConteinerStyled = styled.header`
   font-weight: 700;
  }
  .nawLink {
+     max-height: 65px;
   padding: 7px;
   text-decoration: none;
   color: black;
@@ -21,5 +22,11 @@ export const HeaderConteinerStyled = styled.header`
  }
  .nawLink:hover {
   background-color: white;
+ }
+ .userName{
+     display: inline-block;
+     margin: 0;
+     font: 10px;
+     color: green;
  }
 `;

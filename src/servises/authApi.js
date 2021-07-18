@@ -23,9 +23,9 @@ export const loginApi = async (authFormState) => {
  }
 };
 
-export const logoutApi = async (token) => {
+export const logoutApi = async () => {
  try {
-  axios.defaults.headers.Authorization = `Bearer ${token}`;
+  axios.defaults.headers.Authorization = ``;
   const response = await axios.post(`${BASE_URL}​/users/logout`);
   return response;
  } catch (error) {

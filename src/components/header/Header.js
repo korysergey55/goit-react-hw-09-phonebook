@@ -1,14 +1,21 @@
 import React from "react";
 import { mainRoutes } from "../../routes/mainRouters";
 import HeaderItem from "./headerItem/HeaderItem";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 import { HeaderConteinerStyled } from "./HeaderStyled";
-import { isAuthSelector } from "../../redux/auth/authSelectors";
+import {
+ isAuthSelector,
+ userNameSelector,
+} from "../../redux/auth/authSelectors";
 import { logoutOperation } from "../../redux/auth/authOperations";
 import { ReactComponent as Icon } from "../../images/avatar.svg";
 
-const Header = ({ isAuth, logout }) => {
+const Header = ({ logout }) => {
+ const isAuth = useSelector(isAuthSelector);
+ const userName = useSelector(userNameSelector);
+ //  const dispatch = useDispatch();
+
  return (
   <HeaderConteinerStyled>
    <ul className="headerConteiner">
@@ -17,7 +24,8 @@ const Header = ({ isAuth, logout }) => {
     ))}
     {isAuth && (
      <>
-      <li className="nawLink"  onClick={logout}>
+      <li className="nawLink" onClick={logout}>
+       <p className="userName"> {userName ? userName.name : "User"}</p>
        <Icon width="40" height="40" />
        <span>LogOut</span>
       </li>
@@ -27,13 +35,10 @@ const Header = ({ isAuth, logout }) => {
   </HeaderConteinerStyled>
  );
 };
-
-const mapStateToProps = (state, ownProps) => ({
- isAuth: isAuthSelector(state),
-});
+// export default Header;
 
 const mapDispatchToProps = {
  logout: logoutOperation,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(null, mapDispatchToProps)(Header);

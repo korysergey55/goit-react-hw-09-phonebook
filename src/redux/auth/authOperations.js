@@ -1,4 +1,3 @@
-
 import { registrationApi, loginApi, logoutApi } from "../../servises/authApi";
 import {
  registerUserAction,
@@ -9,7 +8,7 @@ import {
  logoutUserActionError,
 } from "./authActions";
 
-export const registrationOperation = (authFormState) => async (dispatch,) => {
+export const registrationOperation = (authFormState) => async (dispatch) => {
  try {
   const response = await registrationApi(authFormState);
   dispatch(registerUserAction(response.data));
@@ -27,12 +26,10 @@ export const loginOperation = (authFormState) => async (dispatch) => {
  }
 };
 
-
-export const logoutOperation = () => async (dispatch, getState) => {
-    const token = getState().auth.token
+export const logoutOperation = () => async (dispatch) => {
  try {
-  const response = await logoutApi(token);
-  dispatch(logoutUserAction(response.data));
+  const response = await logoutApi();
+  dispatch(logoutUserAction(response));
  } catch (error) {
   dispatch(logoutUserActionError(error));
  }
